@@ -1,11 +1,19 @@
 const asyncHandler = require('express-async-handler')
 
+// importing Model
+const Annaouncement = require('../models/AnnouncementModel')
+
 // ## desc  get Announcements
 // ## route GET /api/annaouncement
 // ## access Public
 
 const getAnnouncements = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: 'Get Annaouncement' })
+    const Announcements = await Annaouncement.find()
+    // if (!Announcements) {
+    //     res.status(200).json({ message: 'No Announcements Yet' })
+    // }
+
+    res.status(200).json(Announcements)
 })
 // -----*-----*-----*-----*-----*-----*-----*-----*-----*
 
