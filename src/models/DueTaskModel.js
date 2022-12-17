@@ -17,6 +17,11 @@ const DueTask = mongoose.Schema({
     {
         type: String,
         required: [true, 'Please add a Due Date']
+    },
+    task_type:
+    {
+        type: String,
+        required: [true, 'Please spacify task type']
     }
 
 }, {
