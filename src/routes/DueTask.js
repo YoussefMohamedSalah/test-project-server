@@ -1,24 +1,26 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
+const {
+    getDueTasks,
+    postDueTask,
+    updateDueTask,
+    deleteDueTask,
+} = require("../controllers/dueTaskController");
 
+// ## Another Way to clean Up some Code, the following
 
-router.get('/', async (req, res) => {
-    res.status(200).json({ message: 'Get DueTask' })
-})
+// way Number 1
+router.route("/").get(getDueTasks).post(postDueTask);
+router.route("/:id").put(updateDueTask).delete(deleteDueTask);
 
-router.post('/', async (req, res) => {
-    res.status(200).json({ message: 'Post DueTask' })
-})
+// way Number 2
 
-router.put('/:id', async (req, res) => {
-    const id = req.params.id
-    res.status(200).json({ message: `Update DueTask with id : ${id}` })
-})
+// router.get('/', getDueTasks)
 
-router.delete('/:id', async (req, res) => {
-    const id = req.params.id
-    res.status(200).json({ message: `Delete DueTask with id : ${id}` })
-})
+// router.post('/', postDueTask)
 
+// router.put('/:id', updateDueTask)
+
+// router.delete('/:id', deleteDueTask)
 
 module.exports = router;

@@ -1,25 +1,26 @@
-const express = require('express')
-const router = express.Router()
-const { getAnnouncements } = require('../controllers/annaouncementController')
+const express = require("express");
+const router = express.Router();
+const {
+    getAnnouncements,
+    postAnnouncement,
+    updateAnnouncement,
+    deleteAnnouncement,
+} = require("../controllers/annaouncementController");
 
+// ## Another Way to clean Up some Code, the following
 
-router.get('/', async (req, res) => {
-    res.status(200).json({ message: 'Get Annaouncement' })
-})
+// way Number 1
+router.route("/").get(getAnnouncements).post(postAnnouncement);
+router.route("/:id").put(updateAnnouncement).delete(deleteAnnouncement);
 
-router.post('/', async (req, res) => {
-    res.status(200).json({ message: 'Post Annaouncement' })
-})
+// way Number 2
 
-router.put('/:id', async (req, res) => {
-    const id = req.params.id
-    res.status(200).json({ message: `Update Annaouncement with id : ${id}` })
-})
+// router.get('/', getAnnouncements)
 
-router.delete('/:id', async (req, res) => {
-    const id = req.params.id
-    res.status(200).json({ message: `Delete Annaouncement with id : ${id}` })
-})
+// router.post('/', postAnnouncement)
+
+// router.put('/:id', updateAnnouncement)
+
+// router.delete('/:id', deleteAnnouncement)
 
 module.exports = router;
-
