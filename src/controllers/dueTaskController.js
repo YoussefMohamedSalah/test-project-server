@@ -18,7 +18,7 @@ const getDueTasks = asyncHandler(async (req, res) => {
 // ## access Public
 
 const postDueTask = asyncHandler(async (req, res) => {
-    const { title, course, topic, due_to } = req.body;
+    const { title, course, topic, due_to, task_type } = req.body;
     if (!course) {
         res.status(400);
         throw new Error("PLease Add A Task Course");
@@ -29,6 +29,7 @@ const postDueTask = asyncHandler(async (req, res) => {
         course,
         topic,
         due_to,
+        task_type
     });
 
     res.status(200).json(dueTask);
