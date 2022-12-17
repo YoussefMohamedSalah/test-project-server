@@ -1,16 +1,16 @@
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require("express-async-handler");
 
 // importing Model
-const DueTask = require('../models/DueTaskModel')
-
+const DueTask = require("../models/DueTaskModel");
 
 // ## desc  get Due Tasks
 // ## route GET /api/due_task
 // ## access Public
 
 const getDueTasks = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: 'Get Due Tasks' })
-})
+    const DueTasks = await DueTask.find();
+    res.status(200).json(DueTasks);
+});
 // -----*-----*-----*-----*-----*-----*-----*-----*-----*
 
 // ## desc  post Due Task
@@ -18,14 +18,21 @@ const getDueTasks = asyncHandler(async (req, res) => {
 // ## access Public
 
 const postDueTask = asyncHandler(async (req, res) => {
-    const { title, course, topic, due_to } = req.body
+    const { title, course, topic, due_to } = req.body;
     if (!course) {
-        res.status(400)
-        throw new Error('PLease Add A Task Course')
+        res.status(400);
+        throw new Error("PLease Add A Task Course");
     }
 
-    res.status(200).json({ message: 'Post Due Task' })
-})
+    const dueTask = await DueTask.create({
+        title,
+        course,
+        topic,
+        due_to,
+    });
+
+    res.status(200).json(dueTask);
+});
 // -----*-----*-----*-----*-----*-----*-----*-----*-----*
 
 // ## desc  update Due Task
@@ -33,13 +40,30 @@ const postDueTask = asyncHandler(async (req, res) => {
 // ## access Public
 
 const updateDueTask = asyncHandler(async (req, res) => {
-    const id = req.params.id
+    const id = req.params.id;
     if (!id) {
-        res.status(400)
-        throw new Error('Can Not Found Task')
+        res.status(400);
+        throw new Error("Can Not Found Task");
     }
-    res.status(200).json({ message: `Update Due Task with id : ${id}` })
-})
+
+    // finding the record By Id
+    const dueTask = await DueTask.findById(id);
+    // cheking if there is a record by this id ,, if not throw new error
+    if (!dueTask) {
+        res.sendStatus(400);
+        throw new Error("Due Task Not Found");
+    }
+
+    // update Announcement
+    const updatedDueTask = await DueTask.findByIdAndUpdate(
+        id,
+        req.body,
+        // create New If record doesn't exists
+        { new: true }
+    );
+
+    res.status(200).json(updatedDueTask);
+});
 // -----*-----*-----*-----*-----*-----*-----*-----*-----*
 
 // ## desc  delete Due Task
@@ -47,19 +71,26 @@ const updateDueTask = asyncHandler(async (req, res) => {
 // ## access Public
 
 const deleteDueTask = asyncHandler(async (req, res) => {
-    const id = req.params.id
-    if (!id) {
-        res.status(400)
-        throw new Error('Can Not Found Task')
-    }
-    res.status(200).json({ message: `Delete Due Task with id : ${id}` })
-})
-// -----*-----*-----*-----*-----*-----*-----*-----*-----*
+    // finding the Annaouncement By Id
+    const dueTask = await DueTask.findById(id);
 
+    // cheking if there is a record by this id ,, if not throw new error
+    if (!dueTask) {
+        res.sendStatus(400);
+        throw new Error("Due Task Not Found");
+    }
+
+    // deleteing Reacord If exists
+    await dueTask.remove();
+
+    // responding By Id For Front end Usage
+    res.status(200).json(id);
+});
+// -----*-----*-----*-----*-----*-----*-----*-----*-----*
 
 module.exports = {
     getDueTasks,
     postDueTask,
     updateDueTask,
-    deleteDueTask
-}
+    deleteDueTask,
+};

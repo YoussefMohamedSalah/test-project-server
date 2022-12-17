@@ -12,7 +12,7 @@ const Announcement = mongoose.Schema({
     },
     imageUrl: String
 }, {
-    timestapms: true,
+    timestamps: true,
 })
 
 module.exports = mongoose.model('announcement', Announcement)

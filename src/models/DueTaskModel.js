@@ -13,13 +13,13 @@ const DueTask = mongoose.Schema({
         type: String,
         required: [true, 'Please add a Topic']
     },
-    due_date:
+    due_to:
     {
         type: String,
         required: [true, 'Please add a Due Date']
     }
 
 }, {
-    timestapms: true,
+    timestamps: true,
 })
 module.exports = mongoose.model('due_task', DueTask)
