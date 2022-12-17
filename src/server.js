@@ -12,9 +12,8 @@ app.listen(port, () => console.log(`Server Running on port : ${port}`))
 
 app.use(express.json())
 app.use(cors())
-// ----
-// app.use(Announcement)
-// app.use(DueTask)
-app.use(require("./routes/Announcement.js"));
-app.use(require("./routes/DueTask.js"));
+// -----
+app.use('/api/announcement', require('./routes/Announcement'))
+app.use('/api/due_task', require('./routes/DueTask'))
+
 
